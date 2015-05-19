@@ -31,7 +31,7 @@ $app->get('/contact', function() use ($app) {
 });
 
 $app->get('/corpus', function() use ($app) {
-    $maxRows = 30;
+    $maxRows = 40;
     $sql = 'SELECT `word`, `count` FROM `corpusword` ORDER BY `count` DESC LIMIT ?';
     $colors = BIS\RandomColor::get($maxRows);
     $data = array();
