@@ -20,13 +20,25 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Business Intelligence Seminar</a>
+          <a class="navbar-brand" href="/">Business Intelligence Seminar</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li><a href="/">Home</a></li>
+            <li>
+                <div class="dropdown">
+                    <button class="btn btn-default dropdown-toggle navbar-btn" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                        Words
+                         <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu scrollable-menu" role="menu" aria-labelledby="dropdownMenu1">
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="/corpus">All Courses</a></li>
+                        {% for course in courses %}
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="/corpus/{{ course.id }}">{{ course.name }} ({{ course.code }})</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </li>
             <li><a href="/about">About</a></li>
-            <li><a href="/contact">Contact</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
