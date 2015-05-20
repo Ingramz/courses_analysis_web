@@ -79,6 +79,16 @@ $app->get('/topics', function(Silex\Application $app) {
     ));
 });
 
+$app->get('/course_topics', function(Silex\Application $app) {
+    return $app['twig']->render('course_topics.twig', array(
+        'courses' => BIS\Course::getAll($app['db']),
+        'topics' => BIS\Topic::all($app['db']),
+        'map_courses' => json_encode(BIS\Course::getAllNames($app['db'])),
+        'map_topics' => json_encode(BIS\Topic::getAllNames($app['db'])),
+        'map_data' => json_encode(BIS\Topic::courseTopics($app['db'])),
+    ));
+});
+
 // $app->get('/course', function() use ($app) {
 //     $sql = 'SELECT * FROM course ORDER BY ?';
 //     $data = $app['db']->fetchAll($sql, array('name'));

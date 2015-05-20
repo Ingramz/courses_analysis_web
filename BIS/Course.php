@@ -13,6 +13,14 @@ class Course {
         $data = $db->fetchAll($sql);
         return $data;
     }
+
+    public static function getAllNames($db) {
+        $data = array();
+        foreach (self::getAll($db) as $row) {
+            $data[] = trim($row['name']);
+        }
+        return $data;
+    }
     
     public static function getRecord($db, $id) {
         $sql = 'SELECT * FROM `course` WHERE `id` = ?';
