@@ -20,6 +20,7 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 $app->get('/', function() use ($app) {
     return $app['twig']->render('index.twig', array(
         'courses' => BIS\Course::getAll($app['db']),
+        'corpus_words' => json_encode(BIS\CorpusWord::topWords($app['db'], 100)),
     ));
 });
 
