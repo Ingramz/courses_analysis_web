@@ -67,9 +67,17 @@ $app->get('/corpus/{courseId}', function(Silex\Application $app, $courseId) {
         'courses' => BIS\Course::getAll($app['db']),
         'course'  => BIS\Course::getRecord($app['db'], $courseId),
         'summary' => BIS\CourseWord::summary($app['db'], $courseId),
+        'topics' => BIS\Topic::course($app['db'], $courseId)
     ));
 })
 ->assert('courseId', '\d+');
+
+$app->get('/topics', function(Silex\Application $app) {
+    return $app['twig']->render('topics.twig', array(
+        'courses' => BIS\Course::getAll($app['db']),
+        'topics' => BIS\Topic::all($app['db']),
+    ));
+});
 
 // $app->get('/course', function() use ($app) {
 //     $sql = 'SELECT * FROM course ORDER BY ?';
