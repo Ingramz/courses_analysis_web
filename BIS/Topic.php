@@ -43,4 +43,23 @@ class Topic {
         
         return $data;
     }
+    
+    public static function courseTopics($db) {
+        $data = array();
+        // $sql = 'SELECT `course_id`, `topic`, MAX(`weight`) AS weight FROM `coursetopic` GROUP BY `course_id` ORDER BY `course_id`, `topic`';
+        $sql = 'SELECT * FROM `coursetopic`';
+        foreach ($db->fetchAll($sql) as $row) {
+            $data[] = array(intval($row['topic']), intval($row['course_id'] - 1), floatval($row['weight']));
+        }
+        return $data;
+    }
+    
+    public static function getAllNames($db) {
+        $data = array();
+        $sql = 'SELECT DISTINCT(`topic`) AS `topic` FROM `topicword` ORDER BY `topic`';
+        foreach ($db->fetchAll($sql) as $row) {
+            $data[] = 'T' . $row['topic'];
+        }
+        return $data;
+    }
 }

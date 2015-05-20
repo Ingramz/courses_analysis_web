@@ -1,0 +1,74 @@
+{% extends "base.twig" %}
+{% block title %}Course Topics{% endblock %}
+{% block content %}
+    {# <div class="row starter-template">
+        <h2>Course Topics</h2>
+    </div> #}
+    <div class="row">
+        <div id="diagram" style="width:100%; height:1000px;"></div>
+<script>
+        $(function () {
+
+            $('#diagram').highcharts({
+        
+                chart: {
+                    type: 'heatmap',
+                    marginTop: 40,
+                    marginBottom: 40
+                },
+
+
+                title: {
+                    text: 'Course Topics'
+                },
+
+                xAxis: {
+                    categories: {{ map_topics|raw }},
+                },
+
+                yAxis: {
+                    categories: {{ map_courses|raw }},
+                    title: null
+                },
+
+                colorAxis: {
+                    min: 0,
+                    minColor: '#FFFFFF',
+                    maxColor: Highcharts.getOptions().colors[0]
+                },
+
+                legend: {
+                    align: 'right',
+                    layout: 'vertical',
+                    margin: 10,
+                    verticalAlign: 'top',
+                    y: 25,
+                    // symbolHeight: 500
+                },
+
+                tooltip: {
+                    formatter: function () {
+                        return '<b>' + this.series.yAxis.categories[this.point.y] + '</b> has <br><b>' +
+                            this.point.value + '%</b> for topic <br><b>' + this.series.xAxis.categories[this.point.x] + '</b>';
+                    }
+                },
+
+                series: [{
+                    name: 'LDA',
+                    borderWidth: 0,
+                    data: {{ map_data|raw }},
+                    dataLabels: {
+                        enabled: false,
+                        color: 'black',
+                        style: {
+                            textShadow: 'none'
+                        }
+                    }
+                }]
+
+            });
+        }); 
+</script>
+    </div>
+      
+  {% endblock %}
