@@ -22,4 +22,19 @@ class CorpusWord {
         $summary['documents'] = $data['documents'];
         return $summary;
     }
+    
+    public static function topWords($db, $maxCount) {
+        $data = array();
+        $sql = 'SELECT * FROM `corpusword` ORDER BY `count` DESC LIMIT ?';
+        foreach ($db->fetchAll($sql, array($maxCount)) as $row) {
+            $data[] = array($row['word'], intval($row['count']));
+            $maxCount = max($maxCount, $row['count']);
+        } 
+
+        foreach ($data as $key => $item) {
+            $data[$key][1] = round(($item[1] / $maxCount) * 100, 0);
+        }
+        // print_r($data);
+        return $data;
+    }
 }

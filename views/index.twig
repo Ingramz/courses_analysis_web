@@ -4,5 +4,9 @@
       <div class="starter-template">
         <h1>Business Intelligence Seminar</h1>
         <p class="lead">Course Project</p>
+        <canvas id="canvas" class="canvas" width="800" height="400"></canvas>
+        <script>
+        WordCloud(document.getElementById('canvas'), { list: {{ corpus_words|raw }} } );
+        </script>
       </div>
 {% endblock %}
