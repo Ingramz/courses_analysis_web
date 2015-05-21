@@ -1,8 +1,90 @@
 {% extends "base.twig" %}
 {% block title %}About{% endblock %}
 {% block content %}
-  <div class="starter-template">
-    <h1>About</h1>
-    <p class="lead">About the project ...</p>
+  {# <div class="starter-template"> #}
+    <div class="row">
+        <div class="col-md-12">
+            <h2>About</h2>
+        </div>
+        <div class="col-md-8">
+            <p class="lead">
+                The idea behind this project was to gather all the course materials, i.e. content pages, pdf-files, and pptx-files from the <a href="http://courses.cs.ut.ee/">http://courses.cs.ut.ee/</a>, extract all the textual data from these documents and apply topic modeling algorithm <a href="http://en.wikipedia.org/wiki/Latent_Dirichlet_allocation">Latent Dirichlet Allocation</a> (LDA) to this data. The goal was to find out if there are some similar <a href="/topics">topics</a> covered in different <a href="/corpus">courses</a> and to understand the <a href="/course_topics">relations between courses</a>.
+            </p>
+            <p>
+                <h3>Dataset</h3>
+                Current dataset contains all the courses of the 2015 spring semester. There are 59 courses, 866 documents, 56730 different words in dataset. For LDA modeing we used 60 topics and 5000 iterations, however as seen from the LDA convergence diagram below, after ~500 iterations there was no improvement.
+                <div id="diagram"></div>
+<script>
+$(function () {
+    $('#diagram').highcharts({
+        title: {
+            text: 'LDA Convergence',
+            x: -20 //center
+        },
+        // subtitle: {
+        //     text: 'Source: WorldClimate.com',
+        //     x: -20
+        // },
+        xAxis: {
+            title: {
+                text: 'iterations'
+            }
+            // categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+            //     'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        },
+        yAxis: {
+            title: {
+                text: 'log likelihood'
+            }
+            // plotLines: [{
+            //     value: 0,
+            //     width: 1,
+            //     color: '#808080'
+            // }]
+        },
+        tooltip: {
+            // valueSuffix: '°C'
+        },
+        // legend: {
+        //     layout: 'vertical',
+        //     align: 'right',
+        //     verticalAlign: 'middle',
+        //     borderWidth: 0
+        // },
+        series: [{
+            name: 'log likelihood',
+            data: {{ lda_loglikelihood|raw }}
+        }]
+    });
+});
+</script>             
+            </p>
+        </div>
+        <div class="col-md-4">
+            <p>Project members: Ragnart Vent and Martin Vels. <br/>Supervisor: Siim Karus.</p>
+            <p>
+                Following tools were used to achieve the goal:
+                <ul>
+                    <li><a href="http://scrapy.org/">Scrapy</a> for crawling and downloading all the data from the Courses websites.</li>
+                    <li><a href="http://euske.github.io/pdfminer/index.html">PDFMiner</a> for extracting all the textual data from the PDF-files.</li>
+                    <li><a href="https://python-pptx.readthedocs.org/en/latest/">python-pptx</a> for extracting all the textual data from the PPTX-files.</li>
+                    <li><a href="http://www.crummy.com/software/BeautifulSoup/">Bautiful Soup</a> for extracting all the textual data from the content pages in HTML.</li>
+                    <li><a href="http://www.nltk.org/">NLTK</a> for lemmatizing the extracted words into main form to reduce duplicate words.</li>
+                    <li><a href="http://pythonhosted.org/lda/">LDA</a> for topic modeling.</li>
+                    <li><a href="http://timdream.org/wordcloud2.js/">WordCloud</a> for creating word clouds of top-most words.</li>
+                    {# <li><a href="http://d3js.org/">D3js</a> for pie-charts.</li> #}
+                    <li><a href="http://www.highcharts.com/">Highcharts</a> for creating a heatmap of course topics.</li>
+                    <li><a href="https://www.sqlite.org/">SQLite</a> and <a href="https://peewee.readthedocs.org/en/latest/">peewee</a> for storing data.</li>
+                    <li><a href="http://silex.sensiolabs.org/">Silex</a> and <a href="http://getbootstrap.com/">Bootstrap</a> for creating this website.</li>
+                </ul>
+            </p>
+            <p>
+                The code of the project is available in Github:
+                <ul>
+                    <li><a href="https://github.com/mvels/biseminar">Data scraping, text extraction, topic modeling</a></li>
+                    <li><a href="https://github.com/mvels/biseminarweb">Project website</a></li>
+                </ul>
+            </p>
+        </div>
   </div>
 {% endblock %}

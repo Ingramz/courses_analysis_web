@@ -23,4 +23,28 @@ class CourseWord {
         $summary['url'] = 'abc';
         return $summary;
     }
+    
+    public static function topWords($db, $maxCount, $id) {
+        $data = array();
+        $sql = 'SELECT * FROM `courseword` WHERE `course_id` = ? ORDER BY `count` DESC LIMIT ?';
+        foreach ($db->fetchAll($sql, array($id, $maxCount)) as $row) {
+            $data[] = array($row['word'], intval($row['count']));
+            $maxCount = max($maxCount, $row['count']);
+        } 
+
+        foreach ($data as $key => $item) {
+            $data[$key][1] = round(($item[1] / $maxCount) * 100, 0);
+        }
+        return $data;
+    }
+    
+    public static function topWordsLabels($db, $maxCount, $id) {
+        $data = array();
+        $words = self::topWords($db, $maxCount, $id);
+        foreach ($words as $item) {
+            $data[] = array('text' => $item[0], 'size' => intval($item[1]));
+        }
+        return $data;
+            
+    }
 }

@@ -14,11 +14,11 @@ class Topic {
         $query = $db->executeQuery($sql);
         foreach ($query->fetchAll() as $row) {
             $data[$row['topic']]['words'][] = $row['word'];
+            $data[$row['topic']]['id'] = $row['topic'];
         }
-        foreach ($data as $id => $item) {
-            $data[$id]['id'] = $id;
-            // $data[$id]['words'] = implode(', ', $item['words']);
-        }
+        // foreach ($data as $id => $item) {
+        //     $data[$id]['id'] = $id;
+        // }
         return $data;
     }
     
@@ -44,6 +44,20 @@ class Topic {
         return $data;
     }
     
+    public static function courseTopicWeights($db, $courseId) {
+        $data = array();
+        $sum = 0;
+        foreach (self::course($db, $courseId) as $topicId => $item) {
+            $weight = floatval($item['weight']);
+            $sum += $weight;
+            $data[] = array('T' . $topicId, $weight);
+        }
+        if ($weight < 100) {
+            $data[] = array('Other', 100 - $sum);
+        }
+        return $data;
+    }
+    
     public static function courseTopics($db) {
         $data = array();
         // $sql = 'SELECT `course_id`, `topic`, MAX(`weight`) AS weight FROM `coursetopic` GROUP BY `course_id` ORDER BY `course_id`, `topic`';
@@ -59,6 +73,14 @@ class Topic {
         $sql = 'SELECT DISTINCT(`topic`) AS `topic` FROM `topicword` ORDER BY `topic`';
         foreach ($db->fetchAll($sql) as $row) {
             $data[] = 'T' . $row['topic'];
+        }
+        return $data;
+    }
+    
+    public static function getAllWords($db) {
+        $data = array();
+        foreach (self::all($db) as $key => $item) {
+            $data[$key][] = implode(', ', $item['words']);
         }
         return $data;
     }
