@@ -61,9 +61,11 @@ class Topic {
     public static function courseTopics($db) {
         $data = array();
         // $sql = 'SELECT `course_id`, `topic`, MAX(`weight`) AS weight FROM `coursetopic` GROUP BY `course_id` ORDER BY `course_id`, `topic`';
+        
+        $courseIds = Course::getIdListOrderedByName($db);
         $sql = 'SELECT * FROM `coursetopic`';
         foreach ($db->fetchAll($sql) as $row) {
-            $data[] = array(intval($row['topic']), intval($row['course_id'] - 1), floatval($row['weight']));
+            $data[] = array(intval($row['topic']), intval($courseIds[$row['course_id']]), floatval($row['weight']));
         }
         return $data;
     }

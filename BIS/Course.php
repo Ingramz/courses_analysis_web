@@ -22,6 +22,16 @@ class Course {
         return $data;
     }
     
+    public static function getIdListOrderedByName($db) {
+        $data = array();
+        $rowCount = 0;
+        foreach (self::getAll($db) as $row) {
+            $data[$row['id']] = $rowCount;
+            $rowCount++;
+        }
+        return $data;
+    }
+    
     public static function getRecord($db, $id) {
         $sql = 'SELECT * FROM `course` WHERE `id` = ?';
         $data = $db->fetchAssoc($sql, array($id));
