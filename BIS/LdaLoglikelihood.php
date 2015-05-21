@@ -10,7 +10,7 @@ class LdaLoglikelihood {
     
     public static function all($db) {
         $data = array();
-        $sql = 'SELECT * FROM `ldaloglikelihood` ORDER BY `iteration` ASC';
+        $sql = 'SELECT * FROM `ldaloglikelihood` WHERE `iteration` > 10 ORDER BY `iteration` ASC';
         foreach ($db->fetchAll($sql) as $row) {
             $data[] = array(intval($row['iteration']), floatval($row['loglikelihood']));
         } 
