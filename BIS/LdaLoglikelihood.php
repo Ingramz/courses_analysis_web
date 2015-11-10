@@ -16,4 +16,10 @@ class LdaLoglikelihood {
         } 
         return $data;
     }
+	
+	public static function getIterationCount($db){
+		$sql = 'SELECT MAX(iteration) as max_iter FROM `ldaloglikelihood`';
+		$data = $db->fetchAssoc($sql);
+		return $data['max_iter']+10;
+	}
 }

@@ -12,7 +12,7 @@
             </p>
             <p>
                 <h3>Dataset</h3>
-                Current dataset contains all the courses of the 2015 spring semester. There are 59 courses, 866 documents, 56730 different words in dataset. For LDA modeing we used 60 topics and 5000 iterations, however as seen from the LDA convergence diagram below, after ~500 iterations there was no improvement.
+                Current dataset contains all the courses of 2013/2014 and 2014/2015 academic year semesters. There are {{summary.num_courses}} courses, {{summary.documents}} documents, {{summary.words}} different words in dataset. For LDA modeing we used {{summary.num_courses}} topics and  {{max_iter}} iterations, however as seen from the LDA convergence diagram below, after ~500 iterations there was no improvement.
                 <div id="diagram"></div>
 <script>
 $(function () {
@@ -68,7 +68,7 @@ $(function () {
                     <li><a href="http://scrapy.org/">Scrapy</a> for crawling and downloading all the data from the Courses websites.</li>
                     <li><a href="http://euske.github.io/pdfminer/index.html">PDFMiner</a> for extracting all the textual data from the PDF-files.</li>
                     <li><a href="https://python-pptx.readthedocs.org/en/latest/">python-pptx</a> for extracting all the textual data from the PPTX-files.</li>
-                    <li><a href="http://www.crummy.com/software/BeautifulSoup/">Bautiful Soup</a> for extracting all the textual data from the content pages in HTML.</li>
+                    <li><a href="http://www.crummy.com/software/BeautifulSoup/">Beautiful Soup</a> for extracting all the textual data from the content pages in HTML.</li>
                     <li><a href="http://www.nltk.org/">NLTK</a> for lemmatizing the extracted words into main form to reduce duplicate words.</li>
                     <li><a href="http://pythonhosted.org/lda/">LDA</a> for topic modeling.</li>
                     <li><a href="http://timdream.org/wordcloud2.js/">WordCloud</a> for creating word clouds of top-most words.</li>
@@ -76,7 +76,9 @@ $(function () {
                     <li><a href="http://www.highcharts.com/">Highcharts</a> for creating a heatmap of course topics.</li>
                     <li><a href="https://www.sqlite.org/">SQLite</a> and <a href="https://peewee.readthedocs.org/en/latest/">peewee</a> for storing data.</li>
                     <li><a href="http://silex.sensiolabs.org/">Silex</a> and <a href="http://getbootstrap.com/">Bootstrap</a> for creating this website.</li>
-                </ul>
+					<li><a href="https://pypi.python.org/pypi/langdetect/1.0.5">langdetect</a> for detecting the language of a text.</li>
+					<li><a href="http://lemmatise.ijs.si/">Lemmagen</a> for lemmatizing Estonian words.</li>
+				</ul>
             </p>
             <p>
                 The code of the project is available in Github:

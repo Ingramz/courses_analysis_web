@@ -17,7 +17,7 @@ class Course {
     public static function getAllNames($db) {
         $data = array();
         foreach (self::getAll($db) as $row) {
-            $data[] = trim($row['name']);
+            $data[] = trim($row['name']) . '(' . $row['code'] . ')';
         }
         return $data;
     }

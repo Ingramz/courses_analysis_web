@@ -20,6 +20,12 @@ class CorpusWord {
         $sql = 'SELECT COUNT(*) AS "documents" FROM `lecture`';
         $data = $db->fetchAssoc($sql, array());
         $summary['documents'] = $data['documents'];
+		
+		//total number of courses
+		$sql = 'SELECT COUNT(*) AS num_courses FROM `course`';
+		$data = $db->fetchAssoc($sql);
+		$summary['num_courses'] = $data['num_courses'];
+		
         return $summary;
     }
     
@@ -34,7 +40,6 @@ class CorpusWord {
         foreach ($data as $key => $item) {
             $data[$key][1] = round(($item[1] / $maxCount) * 100, 0);
         }
-        // print_r($data);
         return $data;
     }
 }

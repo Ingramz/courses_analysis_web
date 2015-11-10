@@ -13,11 +13,12 @@
             <div style="text-align: center;">
             <h3>Top {{ rows }} Words</h3>
             
-            <canvas id="wordcloud" class="canvas" width="600" height="400"></canvas>
+			
+            <canvas id="wordcloud" class="canvas" width="600px" height="500px"></canvas>
             <script>
             WordCloud(document.getElementById('wordcloud'), { 
                 list: {{ corpus_words|raw }}
-                // ,gridSize: 0
+				//,gridSize: 0
                 // , origin: [300, 200]
             });
             </script>
@@ -48,7 +49,7 @@
                 },
                 "size": {
                     "canvasWidth": 590,
-                    "pieOuterRadius": "90%"
+					"pieOuterRadius": "90%"
                 },
                 "data": {
                     "sortOrder": "value-desc",
