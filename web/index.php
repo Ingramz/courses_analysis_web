@@ -28,24 +28,14 @@ $app->get('/about', function() use ($app) {
     return $app['twig']->render('about.twig', array(
         'courses' => BIS\Course::getAll($app['db']),
         'lda_loglikelihood' => json_encode(BIS\LdaLoglikelihood::all($app['db'])),
+		'summary' => BIS\CorpusWord::summary($app['db']),
+		'max_iter' => BIS\LdaLoglikelihood::getIterationCount($app['db']),
     ));
 });
 
 $app->get('/corpus', function(Silex\Application $app) {
-    // $sql = 'SELECT `word`, `count` FROM `corpusword` ORDER BY `count` DESC LIMIT ?';
-    // $colors = BIS\RandomColor::get(MAX_ROWS);
-    // $data = array();
-    // foreach ($app['db']->fetchAll($sql, array(MAX_ROWS)) as $i => $row) {
-    //     $data[] = array(
-    //         'label' => $row['word'],
-    //         'value' => intval($row['count']),
-    //         'color' => $colors[$i]
-    //     );
-    // }
-    // return $app->json($data);
     return $app['twig']->render('corpus.twig', array(
         'rows' => MAX_ROWS,
-        // 'data' => json_encode($data),
         'corpus_words' => json_encode(BIS\CorpusWord::topWords($app['db'], MAX_ROWS)),
         'courses' => BIS\Course::getAll($app['db']),
         'summary' => BIS\CorpusWord::summary($app['db']),
@@ -53,31 +43,14 @@ $app->get('/corpus', function(Silex\Application $app) {
 });
 
 $app->get('/corpus/{courseId}', function(Silex\Application $app, $courseId) {
-    // $colors = BIS\RandomColor::get(MAX_ROWS);
-    // $sql = 'SELECT `word`, `count` FROM `courseword` WHERE `course_id` = ? ORDER BY `count` DESC LIMIT ?';
-    // $data = array();
-    // foreach ($app['db']->fetchAll($sql, array($courseId, MAX_ROWS)) as $i => $row) {
-    //     $data[] = array(
-    //         'label' => $row['word'],
-    //         'value' => intval($row['count']),
-    //         'color' => $colors[$i]
-    //     );
-    // }
-
     return $app['twig']->render('corpus.twig', array(
         'rows' => MAX_ROWS,
-        // 'data' => json_encode($data),
         'corpus_words' => json_encode(BIS\CourseWord::topWords($app['db'], MAX_ROWS, $courseId)),
-        // 'words' => json_encode(BIS\CourseWord::topWordsLabels($app['db'], MAX_ROWS, $courseId)),
         'courses' => BIS\Course::getAll($app['db']),
         'course'  => BIS\Course::getRecord($app['db'], $courseId),
         'summary' => BIS\CourseWord::summary($app['db'], $courseId),
         'topics' => BIS\Topic::course($app['db'], $courseId),
         'topic_weights' => json_encode(BIS\Topic::courseTopicWeights($app['db'], $courseId)),
-        // 'topic_words' => json_encode(BIS\Topic::getAllWordsByCourse($app['db'], $courseId)),
-        // 'map_courses' => json_encode(BIS\Course::getAllNamesByCourse($app['db'], $courseId)),
-        // 'map_topics' => json_encode(BIS\Topic::getAllNamesByCourse($app['db'], $courseId)),
-        // 'map_data' => json_encode(BIS\Topic::courseTopicsByCourse($app['db'], $courseId)),
     ));
 })
 ->assert('courseId', '\d+');
@@ -100,11 +73,5 @@ $app->get('/course_topics', function(Silex\Application $app) {
     ));
 });
 
-// $app->get('/course', function() use ($app) {
-//     $sql = 'SELECT * FROM course ORDER BY ?';
-//     $data = $app['db']->fetchAll($sql, array('name'));
-//
-//     return $app->json($data);
-// });
 
 $app->run();
