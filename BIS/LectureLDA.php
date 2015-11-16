@@ -27,9 +27,10 @@ class LectureLDA {
 	public static function allTopicNames($db, $courseId) {
 		$data = array();
 		$lectureIds = self::getLectureIdsOrderedByName($db, $courseId);
+		$lectureKeys = array_keys($lectureIds);
 		$sql = 'SELECT DISTINCT(`topic`) AS `topic` FROM `lecturetopic` WHERE `lecture_id` IN (?)  ORDER BY `topic`';
         
-		$query = $db->executeQuery($sql, array($lectureIds), array(\Doctrine\DBAL\Connection::PARAM_INT_ARRAY));
+		$query = $db->executeQuery($sql, array($lectureKeys), array(\Doctrine\DBAL\Connection::PARAM_INT_ARRAY));
 		foreach ($query->fetchAll() as $row) {
             $data[] = 'T' . $row['topic'];
         }
