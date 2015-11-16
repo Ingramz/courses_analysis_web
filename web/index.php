@@ -51,7 +51,12 @@ $app->get('/corpus/{courseId}', function(Silex\Application $app, $courseId) {
         'summary' => BIS\CourseWord::summary($app['db'], $courseId),
         'topics' => BIS\Topic::course($app['db'], $courseId),
         'topic_weights' => json_encode(BIS\Topic::courseTopicWeights($app['db'], $courseId)),
-    ));
+		'topic_words' => json_encode(BIS\LectureLDA::getAllWords($app['db'], $courseId)),
+        'map_lectures' => json_encode(BIS\LectureLDA::allLectureNames($app['db'], $courseId)),
+        'map_topics' => json_encode(BIS\LectureLDA::allTopicNames($app['db'], $courseId)),
+        'map_data' => json_encode(BIS\LectureLDA::allLectureTopics($app['db'], $courseId)),
+		'lecture_url' => json_encode(BIS\LectureLDA::allLectureHyperlinks($app['db'], $courseId)),
+	));
 })
 ->assert('courseId', '\d+');
 
