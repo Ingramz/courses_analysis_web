@@ -32,13 +32,13 @@ class CorpusWord {
     public static function topWords($db, $maxCount) {
         $data = array();
         $sql = 'SELECT * FROM `corpusword` ORDER BY `count` DESC LIMIT ?';
+		$max_row = 0;
         foreach ($db->fetchAll($sql, array($maxCount)) as $row) {
             $data[] = array($row['word'], intval($row['count']));
-            $maxCount = max($maxCount, $row['count']);
+            $max_row = max($max_row, $row['count']);
         } 
-
         foreach ($data as $key => $item) {
-            $data[$key][1] = round(($item[1] / $maxCount) * 100, 0);
+            $data[$key][1] = round(($item[1] / $max_row) * 100, 0);
         }
         return $data;
     }

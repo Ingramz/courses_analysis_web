@@ -27,13 +27,14 @@ class CourseWord {
     public static function topWords($db, $maxCount, $id) {
         $data = array();
         $sql = 'SELECT * FROM `courseword` WHERE `course_id` = ? ORDER BY `count` DESC LIMIT ?';
+		$maxRow = 0;
         foreach ($db->fetchAll($sql, array($id, $maxCount)) as $row) {
             $data[] = array($row['word'], intval($row['count']));
-            $maxCount = max($maxCount, $row['count']);
+            $maxRow = max($maxRow, $row['count']);
         } 
 
         foreach ($data as $key => $item) {
-            $data[$key][1] = round(($item[1] / $maxCount) * 100, 0);
+            $data[$key][1] = round(($item[1] / $maxRow) * 100, 0);
         }
         return $data;
     }

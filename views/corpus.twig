@@ -20,8 +20,21 @@
 				<canvas id="wordcloud" class="canvas" width="600px" height="500px"></canvas>
 				
 				<script>
+				words = {{ corpus_words|raw }};
+				
+				max_val = 0;
+				for(var val in words){
+					max_val = Math.max(max_val, words[val][1]);
+				}
+				
+				if(max_val != 100){
+					for (var key in words) {
+						words[key][1] = Math.round(100*words[key][1]/max_val);
+						console.log(words[key]);
+					}
+				}
 				WordCloud(document.getElementById('wordcloud'), { 
-					list: {{ corpus_words|raw }}
+					list: {{ corpus_words|raw }},
 				});
 				</script>
 				
@@ -112,8 +125,9 @@
 		
 		<div class="row">
 			<div class="col-md-12">
-				<div id="lecturediagram" style="width:100%; height:100%"></div>
+				<div id="lecturediagram"></div>
 					<script>
+					hm_height = {{ map_lectures|raw }}.length*30;
 					var topic_words = {{ topic_words|raw }};
 					var lecture_url = {{ lecture_url|raw }};
 					$(function () {
@@ -124,7 +138,7 @@
 								type: 'heatmap',
 								marginTop: 40,
 								marginBottom: 40,
-								height: {{ map_lectures|raw }}.length*30
+								height: hm_height < 300 ? 300 : hm_height
 							},
 
 							title: {
