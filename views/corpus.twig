@@ -20,19 +20,6 @@
 				<canvas id="wordcloud" class="canvas" width="600px" height="500px"></canvas>
 				
 				<script>
-				words = {{ corpus_words|raw }};
-				
-				max_val = 0;
-				for(var val in words){
-					max_val = Math.max(max_val, words[val][1]);
-				}
-				
-				if(max_val != 100){
-					for (var key in words) {
-						words[key][1] = Math.round(100*words[key][1]/max_val);
-						console.log(words[key]);
-					}
-				}
 				WordCloud(document.getElementById('wordcloud'), { 
 					list: {{ corpus_words|raw }},
 				});
