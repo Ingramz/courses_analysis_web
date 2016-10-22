@@ -7,10 +7,19 @@ class Course {
     public function __construct(Silex\Application $app) {
         $this->db = $app['db'];
     }
-    
+	
     public static function getAll($db) {
         $sql = 'SELECT * FROM `course` ORDER BY `name`';
         $data = $db->fetchAll($sql);
+        return $data;
+    }
+	
+	public static function getAllNamesById($db) {
+        $data = array();
+		$sql = 'SELECT * FROM `course` ORDER BY `id`';
+        foreach ($db->fetchAll($sql) as $row) {
+            $data[] = trim($row['name']) . ' ' . $row['year'] . '/' . $row['semester'] . ' ';
+        }
         return $data;
     }
 

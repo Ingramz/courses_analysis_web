@@ -4,8 +4,9 @@
     <div class="row">
         <div class="col-md-12">
             <h2>LDA Topics</h2>
-            <table class="table table-striped table-hover table-condensed table-bordered">
+            <table id= "topicword" class="table table-striped table-hover table-condensed table-bordered">
                 <tr>
+					<th></th>
                     <th>Topic</th>
                     {% for i in 1..10 %}
                         <th>Word {{ i }}</th>
@@ -13,13 +14,39 @@
                 </tr>
                 {% for topic in topics %}
                 <tr>
+					<td class="arrow">+</td>
                     <td>T{{ topic.id }}</td>
                     {% for word in topic.words %}
                         <td>{{ word }}</td>
                     {% endfor %}
                 </tr>
+				<tr>
+					<td colspan="12">	
+					<b>Related courses: </b>
+					{% for entry in map_data %}
+						{% if (entry[0]) == (topic.id) %}
+							{{entry[1]}}({{entry[2]}}%);
+						{% endif %}
+                    {% endfor %}
+					</td>
+				</tr>
                 {% endfor %}
             </table>
+			<script>
+				$("#topicword tr:odd").addClass("master");
+				$("#topicword tr:not(.master)").hide();
+				$("#topicword tr:first-child").show();
+				$("#topicword tr.master").click(function(){
+					$subbtn = $(this).find(".arrow")
+					if($subbtn.text()=='+'){
+						$subbtn.text('-');
+					}else{
+						$subbtn.text('+');
+					}
+
+					$(this).next("tr").toggle();
+				}); 
+			</script>
         </div>
     </div>
       

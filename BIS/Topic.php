@@ -47,12 +47,14 @@ class Topic {
     public static function courseTopicWeights($db, $courseId) {
         $data = array();
         $sum = 0;
+
         foreach (self::course($db, $courseId) as $topicId => $item) {
             $weight = floatval($item['weight']);
             $sum += $weight;
             $data[] = array('T' . $topicId, $weight);
         }
-        if ($weight < 100) {
+
+        if ( $sum < 100) {
             $data[] = array('Other', 100 - $sum);
         }
         return $data;
@@ -60,7 +62,6 @@ class Topic {
     
     public static function courseTopics($db) {
         $data = array();
-        // $sql = 'SELECT `course_id`, `topic`, MAX(`weight`) AS weight FROM `coursetopic` GROUP BY `course_id` ORDER BY `course_id`, `topic`';
         
         $courseIds = Course::getIdListOrderedByName($db);
         $sql = 'SELECT * FROM `coursetopic`';
@@ -69,6 +70,18 @@ class Topic {
         }
         return $data;
     }
+	
+	public static function topicCourses($db) {
+        $data = array();
+        
+        $courseNames = Course::getAllNamesById($db);
+        $sql = 'SELECT * FROM `coursetopic` ORDER BY topic, weight DESC';
+        foreach ($db->fetchAll($sql) as $row) {
+            $data[] = array(intval($row['topic']), $courseNames[$row['course_id']-1], floatval($row['weight']));
+        }
+        return $data;
+    }
+    
     
     public static function getAllNames($db) {
         $data = array();
