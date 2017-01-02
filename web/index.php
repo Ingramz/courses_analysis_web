@@ -64,7 +64,6 @@ $app->get('/topics', function(Silex\Application $app) {
     return $app['twig']->render('topics.twig', array(
         'courses' => BIS\Course::getAll($app['db']),
         'topics' => BIS\Topic::all($app['db']),
-		'map_data' => BIS\Topic::topicCourses($app['db']),
     ));
 });
 

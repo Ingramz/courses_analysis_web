@@ -16,9 +16,17 @@ class Topic {
             $data[$row['topic']]['words'][] = $row['word'];
             $data[$row['topic']]['id'] = $row['topic'];
         }
-        // foreach ($data as $id => $item) {
-        //     $data[$id]['id'] = $id;
-        // }
+		
+		foreach (self::topicCourses($db) as $key => $item) {
+            $data[$key]['courses'] = $item;
+        }
+
+        $sql = 'SELECT * FROM `CourseTopicInfo`';
+        $query = $db->executeQuery($sql);
+        foreach ($query->fetchAll() as $row) {
+            $data[$row['topic']]['name'] = $row['name'];
+        }		
+		
         return $data;
     }
     
@@ -77,11 +85,10 @@ class Topic {
         $courseNames = Course::getAllNamesById($db);
         $sql = 'SELECT * FROM `coursetopic` ORDER BY topic, weight DESC';
         foreach ($db->fetchAll($sql) as $row) {
-            $data[] = array(intval($row['topic']), $courseNames[$row['course_id']-1], floatval($row['weight']));
+            $data[$row['topic']][] = $courseNames[$row['course_id']-1] . '(' . $row['weight'] . '%)';
         }
         return $data;
     }
-    
     
     public static function getAllNames($db) {
         $data = array();

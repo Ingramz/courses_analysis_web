@@ -15,7 +15,7 @@
                 {% for topic in topics %}
                 <tr>
 					<td class="arrow">+</td>
-                    <td>T{{ topic.id }}</td>
+                    <td><i>{{ topic.name }}</i></td>
                     {% for word in topic.words %}
                         <td>{{ word }}</td>
                     {% endfor %}
@@ -23,11 +23,11 @@
 				<tr>
 					<td colspan="12">	
 					<b>Related courses: </b>
-					{% for entry in map_data %}
-						{% if (entry[0]) == (topic.id) %}
-							{{entry[1]}}({{entry[2]}}%);
+                        {% if topic.courses is defined and topic.courses is not null %}
+							{% for course in topic.courses %}
+								{{ course }};
+							{% endfor %}
 						{% endif %}
-                    {% endfor %}
 					</td>
 				</tr>
                 {% endfor %}
