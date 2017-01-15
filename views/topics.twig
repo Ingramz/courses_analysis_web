@@ -15,7 +15,11 @@
                 {% for topic in topics %}
                 <tr>
 					<td class="arrow">+</td>
-                    <td><i>{{ topic.name }}</i></td>
+					{% if topic.name is defined and topic.name is not null %}
+						<td><i>{{ topic.name }}</i></td>
+					{% else %}
+						<td><i>General</i></td>
+					{% endif %}
                     {% for word in topic.words %}
                         <td>{{ word }}</td>
                     {% endfor %}
