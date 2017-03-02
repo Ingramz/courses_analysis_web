@@ -56,6 +56,7 @@ $app->get('/corpus/{courseId}', function(Silex\Application $app, $courseId) {
         'map_topics' => json_encode(BIS\LectureLDA::allTopicNames($app['db'], $courseId)),
         'map_data' => json_encode(BIS\LectureLDA::allLectureTopics($app['db'], $courseId)),
 		'lecture_url' => json_encode(BIS\LectureLDA::allLectureHyperlinks($app['db'], $courseId)),
+		'material_topics' =>BIS\MaterialLDA::getMaterialTopics($app['db'], $courseId),
 	));
 })
 ->assert('courseId', '\d+');

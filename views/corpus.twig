@@ -3,7 +3,7 @@
 {% block content %}
 	<div class="row">
 		<div class="col-md-12">
-            <h1>{% if course is defined %}{{ course.name }} ({{ course.code }}){% else %}All Courses{% endif %}</h1>
+            <h1>{% if course is defined %}{{ course.code }} {{ course.name }} ({{ course.year }}/{{ course.semester }}){% else %}All Courses{% endif %}</h1>
         </div>
 	</div>
 	
@@ -106,7 +106,61 @@
 	{% if course is defined %}
 		<div class="row">
 			<div class="col-md-12">
-				<h2>Topic analysis over lecture material</h2>
+				<h2>Topic analysis over lecture material of all courses</h2>
+				<table id= "materialword" class="table table-striped table-hover table-condensed table-bordered">
+					<tr>
+						<th></th>
+						<th>Topic</th>
+						{% for i in 1..10 %}
+							<th>Word {{ i }}</th>
+						{% endfor %}
+					</tr>
+					
+					{% for key, m_topic in material_topics %}			
+						<tr>
+							<td class="arrow">+</td>
+							<td><i>Topic {{ key }}</i></td>
+							{% for word in m_topic.words %}
+								<td>{{ word }}</td>
+							{% endfor %}
+						</tr>
+						<tr>
+							<td colspan="12">	
+							<b>Related lecture material: </b>
+								{% if m_topic.lectures is defined and m_topic.lectures is not null %}
+									{% for lecture in m_topic.lectures %}
+										{% if lecture.main %} <b><i> {% endif %}
+										<a href="{{lecture.link}}">{{lecture.lname}}</a> - {{ lecture.cname }};
+										{% if lecture.main %} </i></b> {% endif %}
+									{% endfor %}
+								{% endif %}
+							</td>
+						</tr>
+					{% endfor %}
+				</table>
+				<script>
+					$("#materialword tr:odd").addClass("master");
+					$("#materialword tr:not(.master)").hide();
+					$("#materialword tr:first-child").show();
+					$("#materialword tr.master").click(function(){
+						$subbtn = $(this).find(".arrow")
+						if($subbtn.text()=='+'){
+							$subbtn.text('-');
+						}else{
+							$subbtn.text('+');
+						}
+
+						$(this).next("tr").toggle();
+					}); 
+				</script>
+			</div>
+		</div>
+	{% endif %}
+	
+	{% if course is defined %}
+		<div class="row">
+			<div class="col-md-12">
+				<h2>Topic analysis over lecture material within given course</h2>
 			</div>
 		</div>
 		
