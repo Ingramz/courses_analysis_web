@@ -39,6 +39,13 @@ class Topic {
         }
         
         $topicIds = array_keys($data);
+		
+        $sql = 'SELECT * FROM coursetopicinfo WHERE topic IN (?)';
+		$query = $db->executeQuery($sql, array($topicIds), array(\Doctrine\DBAL\Connection::PARAM_INT_ARRAY));
+        foreach ($query->fetchAll() as $row) {
+            $data[$row['topic']]['name'] = $row['name'];
+        }		
+		
         $sql = 'SELECT * FROM `topicword` WHERE `topic` IN (?) ORDER BY `topic` ASC, `weight` DESC';
         $query = $db->executeQuery($sql, array($topicIds), array(\Doctrine\DBAL\Connection::PARAM_INT_ARRAY));
         foreach ($query->fetchAll() as $row) {

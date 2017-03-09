@@ -26,7 +26,13 @@ class MaterialLDA {
 		$query = $db->executeQuery($sql, array($topics), array(\Doctrine\DBAL\Connection::PARAM_INT_ARRAY));
 		foreach ($query->fetchAll() as $row) {
             $data[$row['topic']]['words'][] = $row['word'];
-		}		
+		}
+		
+		$sql = 'SELECT * from materialtopicinfo where materialtopicinfo.topic IN (?)';
+		$query = $db->executeQuery($sql, array($topics), array(\Doctrine\DBAL\Connection::PARAM_INT_ARRAY));
+		foreach ($query->fetchAll() as $row) {
+            $data[$row['topic']]['tname'] = $row['name'];
+		}
 				
 		return $data;
 	}

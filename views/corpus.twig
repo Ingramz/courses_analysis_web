@@ -84,6 +84,7 @@
 				</script>
 		
 				<table class="table table-striped table-hover table-condensed table-bordered">
+					<caption><b>Topic analysis over all courses</b></caption>
 					<tr>
 						<th>Topic</th>
 						<th>Weight</th>
@@ -92,7 +93,7 @@
 					</tr>
 					{% for topic in topics %}
 					<tr>
-						<td>T{{ topic.topic }}</td>
+						<td>{{ topic.name }}</td>
 						<td>{{ topic.weight }}%</td>
 						<td>{{ topic.words }}</td>
 					</tr>
@@ -116,10 +117,10 @@
 						{% endfor %}
 					</tr>
 					
-					{% for key, m_topic in material_topics %}			
+					{% for m_topic in material_topics %}			
 						<tr>
 							<td class="arrow">+</td>
-							<td><i>Topic {{ key }}</i></td>
+							<td><i>{{ m_topic.tname }}</i></td>
 							{% for word in m_topic.words %}
 								<td>{{ word }}</td>
 							{% endfor %}
