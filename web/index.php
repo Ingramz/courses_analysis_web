@@ -43,6 +43,8 @@ $app->get('/corpus', function(Silex\Application $app) {
 });
 
 $app->get('/corpus/{courseId}', function(Silex\Application $app, $courseId) {
+	$chart_data = BIS\MaterialLDA::getMaterialTopics($app['db'], $courseId);
+	
     return $app['twig']->render('corpus.twig', array(
         'rows' => MAX_ROWS,
         'corpus_words' => json_encode(BIS\CourseWord::topWords($app['db'], MAX_ROWS, $courseId)),
@@ -51,14 +53,16 @@ $app->get('/corpus/{courseId}', function(Silex\Application $app, $courseId) {
         'summary' => BIS\CourseWord::summary($app['db'], $courseId),
         'topics' => BIS\Topic::course($app['db'], $courseId),
         'topic_weights' => json_encode(BIS\Topic::courseTopicWeights($app['db'], $courseId)),
-/*		
-		'topic_words' => json_encode(BIS\LectureLDA::getAllWords($app['db'], $courseId)),
+/*		'topic_words' => json_encode(BIS\LectureLDA::getAllWords($app['db'], $courseId)),
         'map_lectures' => json_encode(BIS\LectureLDA::allLectureNames($app['db'], $courseId)),
         'map_topics' => json_encode(BIS\LectureLDA::allTopicNames($app['db'], $courseId)),
         'map_data' => json_encode(BIS\LectureLDA::allLectureTopics($app['db'], $courseId)),
 		'lecture_url' => json_encode(BIS\LectureLDA::allLectureHyperlinks($app['db'], $courseId)),
 */		
-		'material_topics' =>BIS\MaterialLDA::getMaterialTopics($app['db'], $courseId),
+		'material_topics_exp' => BIS\MaterialLDA::getMaterialTopicsExpanded($app['db'], $courseId),
+		'chart_data' => json_encode($chart_data['topics']),
+		'chart_lec_names' => json_encode($chart_data['lecture_names']),
+		'chart_lec_urls' => json_encode($chart_data['lecture_urls']),
 	));
 })
 ->assert('courseId', '\d+');
