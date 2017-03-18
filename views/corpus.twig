@@ -112,18 +112,24 @@
 		</div>
 	</div>	
 	
-	<div id="diagram" style="width:100%; height:100%;"></div>
+	<div class="row">
+		<div class="col-md-12">	
+			<div id="diagram" style="width:100%; height:100%;"></div>
+		</div>
+	</div>
 		<script>
+			bar_height = {{ chart_lec_names|raw }}.length*35;
 			var material_lec_urls = {{ chart_lec_urls|raw }};
 			$('#diagram').highcharts({
         
 				chart: {
+					height: bar_height < 300 ? 300 : bar_height,
 					renderTo: 'container',
 					type: 'bar'
 				},
 
 				title: {
-					text: 'Lecture material topic distributions'
+					text: 'Material-topic distributions'
 				},
 
 				xAxis: {
@@ -173,9 +179,8 @@
 				tooltip: {
 
 				  formatter: function() {
-					return '<b>'+ this.x +'</b><br/>'+
-						this.series.name +': '+ this.y +'<br/>'+
-						'Total: '+ this.point.stackTotal;
+					return '<b>Material: </b>'+ this.x +'<br/>'+
+						'<b>Topic: </b>' + this.series.name +': '+ this.y +'%<br/>';
 				}
 
 				},
@@ -183,9 +188,7 @@
 				plotOptions: {
 
 					series: {
-
 						stacking: 'normal',
-						
 						dataLabels: {
 						formatter: function() {
 							var text = '';
