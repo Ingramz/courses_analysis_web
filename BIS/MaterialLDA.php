@@ -50,6 +50,10 @@ class MaterialLDA {
 			$lecture_info[$row['lid']] = array('name' => $row['lname'], 'link' => $row['url']);
         }
 		
+		if(empty($topics)){
+			return array('lecture_names' => array(), 'lecture_urls' => array(), 'topics' => array());
+		}
+		
 		$topic_ids = array_keys($topics);
 		$other_id = max($topic_ids) + 1; // Find other topic ID, should be last
 		$topics[$other_id]['tname'] = "Other";  // Initialize 'Other' topic
