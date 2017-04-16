@@ -18,7 +18,7 @@ class Course {
         $data = array();
 		$sql = 'SELECT * FROM `course` ORDER BY `id`';
         foreach ($db->fetchAll($sql) as $row) {
-            $data[] = trim($row['name']) . ' ' . $row['year'] . '/' . $row['semester'] . ' ';
+            $data[$row['id']] = trim($row['name']) . ' ' . $row['year'] . '/' . $row['semester'] . ' ';
         }
         return $data;
     }

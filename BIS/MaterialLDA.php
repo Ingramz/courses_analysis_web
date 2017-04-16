@@ -69,24 +69,28 @@ class MaterialLDA {
 		//Create distribution by topics
 		foreach ($lectures as $lec_id => $top) {
 			foreach ($top as $t_id => $t_weight) {
-				$topics[$t_id]['lectures'][$lec_id] = floatval($t_weight);
+				$topics[$t_id]['lectures'][$lec_id] = array('weight' => floatval($t_weight), 'name' => $lecture_info[$lec_id]['name']);
 			}
 		}
 		
 		$data = array();
 		//Sort by lecture ID, leave only weights
 		foreach ($topics as $t_id => $val) {
-			ksort($topics[$t_id]['lectures']);
-			$data['topics'][] = array('name' => $val['tname'] . "(" . $t_id . ")" , 'data' => array_values($val['lectures']) );
+			usort($topics[$t_id]['lectures'], 'BIS\MaterialLDA::sortByName');
+			$data['topics'][] = array('name' => $val['tname'] . "(" . $t_id . ")" , 'data' => array_column($val['lectures'], 'weight') );
 		}
 		
-		ksort($lecture_info);
+		usort($lecture_info, 'BIS\MaterialLDA::sortByName');
 		foreach ($lecture_info as $l_id => $l_info) {
 			$data['lecture_names'][] = $l_info['name'];
 			$data['lecture_urls'][$l_info['name']] = $l_info['link'];
 		}
 		
 		return $data;
+	}
+	
+	private static function sortByName($a, $b) {
+		return strcmp($a['name'], $b['name']);
 	}
 	
 }

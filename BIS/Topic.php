@@ -92,7 +92,7 @@ class Topic {
         $courseNames = Course::getAllNamesById($db);
         $sql = 'SELECT * FROM `coursetopic` ORDER BY topic, weight DESC';
         foreach ($db->fetchAll($sql) as $row) {
-            $data[$row['topic']][] = $courseNames[$row['course_id']-1] . '(' . $row['weight'] . '%)';
+            $data[$row['topic']][] = $courseNames[$row['course_id']] . '(' . $row['weight'] . '%)';
         }
         return $data;
     }
