@@ -77,7 +77,9 @@ class MaterialLDA {
 		//Sort by lecture ID, leave only weights
 		foreach ($topics as $t_id => $val) {
 			usort($topics[$t_id]['lectures'], 'BIS\MaterialLDA::sortByName');
-			$data['topics'][] = array('name' => $val['tname'] . "(" . $t_id . ")" , 'data' => array_column($val['lectures'], 'weight') );
+			$new_tname = ($t_id == $other_id) ? $val['tname'] : $val['tname'] . "(" . $t_id . ")";
+			$data['topics'][] = array('name' => $new_tname , 'data' => array_column($val['lectures'], 'weight') );	
+			
 		}
 		
 		usort($lecture_info, 'BIS\MaterialLDA::sortByName');

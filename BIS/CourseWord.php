@@ -28,13 +28,15 @@ class CourseWord {
         $data = array();
         $sql = 'SELECT * FROM `courseword` WHERE `course_id` = ? ORDER BY `count` DESC LIMIT ?';
 		$maxRow = 0;
+		$minRow = PHP_INT_MAX;
         foreach ($db->fetchAll($sql, array($id, $maxCount)) as $row) {
             $data[] = array($row['word'], intval($row['count']));
             $maxRow = max($maxRow, $row['count']);
+			$minRow = min($minRow, $row['count']);
         } 
-
+		$dif = $maxRow - $minRow;
         foreach ($data as $key => $item) {
-            $data[$key][1] = round(($item[1] / $maxRow) * 100, 0);
+            $data[$key][1] = round( (38 * ($item[1] - $minRow) / $dif ) + 17, 0 );
         }
         return $data;
     }

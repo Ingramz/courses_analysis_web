@@ -2,9 +2,15 @@ body {
   padding-top: 50px;
   padding-bottom: 20px;
 }
-.starter-template {
-  padding: 40px 15px;
-  text-align: center;
+.top-buf { 
+	margin-top: 10px !important; 
+	margin-bottom: 50px !important; 
+}
+.code { 
+	margin-left: 5% !important; 
+}
+.authors { 
+	color: #777 !important;
 }
 .scrollable-menu {
     height: auto;

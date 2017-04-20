@@ -26,6 +26,14 @@ class CorpusWord {
 		$data = $db->fetchAssoc($sql);
 		$summary['num_courses'] = $data['num_courses'];
 		
+		$data = array();
+		$sql = 'SELECT DISTINCT year, semester from `course`;';
+        foreach ($db->fetchAll($sql) as $row) {
+            $data[] = $row['year'] . "/" . $row['semester'];
+        }
+		
+		$summary['semesters'] = implode(', ', $data);
+		
         return $summary;
     }
     
@@ -40,6 +48,7 @@ class CorpusWord {
         foreach ($data as $key => $item) {
             $data[$key][1] = round(($item[1] / $max_row) * 100, 0);
         }
+		
         return $data;
     }
 }

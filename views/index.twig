@@ -1,12 +1,63 @@
 {% extends "base.twig" %}
 {% block title %}Home{% endblock %}
 {% block content %}
-      <div class="starter-template">
-        <h1>Business Intelligence Seminar</h1>
-        <p class="lead">Course Project</p>
-        <canvas id="canvas" class="canvas" width="800" height="400"></canvas>
-        <script>
-        WordCloud(document.getElementById('canvas'), { list: {{ corpus_words|raw }} } );
-        </script>
-      </div>
+	<div class="row top-buf">
+		<div class="col-md-12 text-center">
+			<h1>Analysis of Relations Between Courses</h1>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-2"></div>
+		
+		<div class="col-md-8">
+			<p class="lead">
+                The goal of this project was to build a framework that provides the means to analyse courses being taught throughout different faculties in the University of Tartu, specifically what topics are covered and are there any overlaps between different courses. The established framework performs all the necessary steps, starting from data collection and cleaning to the eventual analysis and visualization of the results. As a first step, we scrape data(e.g <i>HTML</i> content pages, <i>pdf</i> files, <i>pptx</i> files) from available Courses web pages(currently from <a href="http://courses.cs.ut.ee/">CS</a> and <a href="http://courses.ms.ut.ee/">MS</a> faculty pages) in order to build a healthy list of courses being taught and a solid base of textual data. Afterwards, we integrate data from other complementary sources, such <a href="http://courses.cs.ut.ee/">Moodle environment</a> and <a href="https://www.is.ut.ee/pls/ois/!tere.tulemast">Study Information System</a>. As a next step, we extract all the textual content from the downloaded files and perform necessary data cleaning operations (tokenization, word lemmatization, stop word removal etc.). A topic modelling algorithm <a href="http://en.wikipedia.org/wiki/Latent_Dirichlet_allocation">Latent Dirichlet Allocation</a> (LDA) is then applied to the cleansed data. The aim is to discover topics that are described by a distribution of words and to find out of which <a href="/topics">topics</a> each course contains. The modelling is done at two different levels: <b>course level</b>(find <a href="/course_topics">related courses</a>) and <b>course material level</b>(find relations between different course materials).
+            </p>
+            
+			<p>
+                <h3 class="text-center">Overview of current analysis</h3>
+                The data was gathered from courses being taught in the following semesters: {{summary.semesters}}. There are a total of  {{summary.num_courses}} courses, {{summary.documents}} documents and {{summary.words}} different words at corpus level. The LDA modelling process performed {{max_iter}} iterations and composed {{summary.num_courses}} course level topics. However, after ~500 iterations there was no improvement as seen from the LDA log-likelihood convergence diagram below.
+                <div id="diagram"></div>
+				<script>
+				$(function () {
+					$('#diagram').highcharts({
+						title: {
+							text: 'LDA Log-likelihood Convergence',
+						},
+						xAxis: {
+							title: {
+								text: 'iterations'
+							}
+						},
+						yAxis: {
+							title: {
+								text: 'log likelihood'
+							}
+						},
+
+						series: [{
+							name: 'log likelihood',
+							data: {{ lda_loglikelihood|raw }}
+						}]
+					});
+				});
+				</script>             
+            </p>
+		</div>
+		
+		<div class="col-md-2"></div>
+		
+	</div>
+	
+	<hr style="margin-bottom:5px !important; margin-top:5px !important; " />
+
+	<div class="row">
+		<div class="col-md-12 text-center">
+			<p class="authors">
+			Contacts: Ragnar Vent, Martin Vels, Siim Karus
+			</p>
+		</div>
+	</div>	
+	
 {% endblock %}

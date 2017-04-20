@@ -17,11 +17,15 @@
 			<div style="text-align: center;">
 				<h3>Top {{ rows }} Words</h3>
 				
-				<canvas id="wordcloud" class="canvas" width="600px" height="500px"></canvas>
+				{% if course is defined %}
+					<canvas id="wordcloud" class="canvas" width="600px" height="500px"></canvas>
+				{% else %}
+					<canvas id="wordcloud" class="canvas" width="1600px" height="800px"></canvas>
+				{% endif %}
 				
 				<script>
 				WordCloud(document.getElementById('wordcloud'), { 
-					list: {{ corpus_words|raw }},
+					list: {{ corpus_words|raw }}
 				});
 				</script>
 				
@@ -108,16 +112,18 @@
 	
 	<div class="row">
 		<div class="col-md-12">
-			<h1>Topic analysis over lecture material of all courses</h1>
+			<h1 class="text-center">Topic analysis over the materials of all courses</h1>
 		</div>
 	</div>	
 	
 	<div class="row">
 		<div class="col-md-12">	
+			<h3 class="text-center">Material-topic distributions</h3>
 			<div id="diagram" style="width:100%; height:100%;"></div>
 		</div>
 	</div>
 		<script>
+			top_margin = {{ chart_data|raw }}.length * 5
 			bar_height = {{ chart_lec_names|raw }}.length*35;
 			var material_lec_urls = {{ chart_lec_urls|raw }};
 			$('#diagram').highcharts({
@@ -125,20 +131,29 @@
 				chart: {
 					height: bar_height < 300 ? 300 : bar_height,
 					renderTo: 'container',
-					type: 'bar'
+					type: 'bar',
+					marginTop: top_margin < 50 ? 50 : top_margin
 				},
-
+				
 				title: {
-					text: 'Material-topic distributions'
+					text: ''
 				},
 
 				xAxis: {
 					categories: {{ chart_lec_names|raw }},
 					labels: {
 						formatter: function () {
-							return '<a href="' + material_lec_urls[this.value] + '">' + this.value + '</a>';
-						}
-					},	
+							var text = this.value,
+								formatted = text.length > 25 ? text.substring(0, 25) + '...' : text;
+
+							return '<div class="js-ellipse" style="width:160px; overflow:hidden; text-align: right " title="' + text + '">' + '<a class="js-ellipse" href="' + material_lec_urls[this.value] + '">' + formatted + '</a>' + '</div>';
+						},
+						style: {
+							width: '160px'
+						},
+						useHTML: true
+					}
+					
 				},
 
 				yAxis: {
@@ -213,7 +228,7 @@
 
 		<div class="row">
 			<div class="col-md-12">
-				<h3>Topics associated with lecture material</h3>
+				<h3 class="text-center">Topics associated with course materials</h3>
 				<table id= "materialword" class="table table-striped table-hover table-condensed table-bordered">
 					<tr>
 						<th></th>

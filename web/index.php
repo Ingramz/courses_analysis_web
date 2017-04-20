@@ -20,16 +20,15 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 $app->get('/', function() use ($app) {
     return $app['twig']->render('index.twig', array(
         'courses' => BIS\Course::getAll($app['db']),
-        'corpus_words' => json_encode(BIS\CorpusWord::topWords($app['db'], MAX_ROWS)),
+		'lda_loglikelihood' => json_encode(BIS\LdaLoglikelihood::all($app['db'])),
+		'summary' => BIS\CorpusWord::summary($app['db']),
+		'max_iter' => BIS\LdaLoglikelihood::getIterationCount($app['db']),
     ));
 });
 
 $app->get('/about', function() use ($app) {
     return $app['twig']->render('about.twig', array(
         'courses' => BIS\Course::getAll($app['db']),
-        'lda_loglikelihood' => json_encode(BIS\LdaLoglikelihood::all($app['db'])),
-		'summary' => BIS\CorpusWord::summary($app['db']),
-		'max_iter' => BIS\LdaLoglikelihood::getIterationCount($app['db']),
     ));
 });
 

@@ -18,7 +18,7 @@
 					height: map_height < 300 ? 300 : map_height,
                     type: 'heatmap',
                     marginTop: 40,
-                    marginBottom: 40
+                    marginBottom: 200
                 },
 
 
@@ -38,7 +38,7 @@
 							var text = this.value,
 								formatted = text.length > 43 ? text.substring(0, 43) + '...' : text;
 
-							return '<div class="js-ellipse" style="width:270px; overflow:hidden" title="' + text + '">' + formatted + '</div>';
+							return '<div class="js-ellipse" style="width:270px; overflow:hidden; text-align: right" title="' + text + '">' + formatted + '</div>';
 						},
 						style: {
 							width: '270px'
@@ -48,16 +48,9 @@
                 },
 
                 colorAxis: {
-                    // stops: [
-                    //     [0, '#3060cf'],
-                    //     [0.25, '#fffbbc'],
-                    //     [0.75, '#c4463a'],
-                    //     [1, '#c4463a']
-                    // ],
                     min: 0,
                     max: 100,
                     minColor: '#FFFFFF',
-                    // maxColor: '#FF0000',
                     maxColor: Highcharts.getOptions().colors[3]
                 },
 
@@ -66,14 +59,14 @@
                     layout: 'vertical',
                     margin: 10,
                     verticalAlign: 'top',
-                    y: 25,
-                    // symbolHeight: 500
+                    y: 25
                 },
 
                 tooltip: {
                     formatter: function () {
-                        return '<b>' + this.series.yAxis.categories[this.point.y] + '</b> has <br><b>' +
-                            this.point.value + '%</b> for topic <br><b>' + this.series.xAxis.categories[this.point.x] + ' (' + topic_words[this.point.x] + ')' + '</b>';
+                        return 'Course: <b>' + this.series.yAxis.categories[this.point.y] + '</b> <br> Weight: <b>' +
+                            this.point.value + '%</b> for topic <b>' + this.series.xAxis.categories[this.point.x] + '<b><br>'
+								+ 'Words: <b>' + topic_words[this.point.x] + '</b>';
                     }
                 },
 

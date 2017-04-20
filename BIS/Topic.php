@@ -24,7 +24,7 @@ class Topic {
         $sql = 'SELECT * FROM `CourseTopicInfo`';
         $query = $db->executeQuery($sql);
         foreach ($query->fetchAll() as $row) {
-            $data[$row['topic']]['name'] = $row['name'];
+            $data[$row['topic']]['name'] = $row['name'] . "(" . $row['topic'] . ")";
         }		
 		
         return $data;
@@ -43,7 +43,7 @@ class Topic {
         $sql = 'SELECT * FROM coursetopicinfo WHERE topic IN (?)';
 		$query = $db->executeQuery($sql, array($topicIds), array(\Doctrine\DBAL\Connection::PARAM_INT_ARRAY));
         foreach ($query->fetchAll() as $row) {
-            $data[$row['topic']]['name'] = $row['name'];
+            $data[$row['topic']]['name'] = $row['name'] . "(" . $row['topic'] . ")";
         }		
 		
         $sql = 'SELECT * FROM `topicword` WHERE `topic` IN (?) ORDER BY `topic` ASC, `weight` DESC';
@@ -99,9 +99,9 @@ class Topic {
     
     public static function getAllNames($db) {
         $data = array();
-        $sql = 'SELECT DISTINCT(`topic`) AS `topic` FROM `topicword` ORDER BY `topic`';
+        $sql = 'SELECT topic, name FROM `CourseTopicInfo` ORDER BY `topic`';
         foreach ($db->fetchAll($sql) as $row) {
-            $data[] = 'T' . $row['topic'];
+            $data[] = $row['name'] . "(" . $row['topic'] . ")";
         }
         return $data;
     }
