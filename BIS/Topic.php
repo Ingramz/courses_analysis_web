@@ -13,8 +13,12 @@ class Topic {
         $sql = 'SELECT * FROM `topicword` ORDER BY `topic` ASC, `weight` DESC';
         $query = $db->executeQuery($sql);
         foreach ($query->fetchAll() as $row) {
-            $data[$row['topic']]['words'][] = $row['word'];
-            $data[$row['topic']]['id'] = $row['topic'];
+            if ( intval($row['type']) == 1) {
+				$data[$row['topic']]['words'][] = $row['word'];
+			} else if ( intval($row['type']) == 2 ) {
+				$data[$row['topic']]['normwords'][] = $row['word'];
+			}
+			$data[$row['topic']]['id'] = $row['topic'];
         }
 		
 		foreach (self::topicCourses($db) as $key => $item) {
