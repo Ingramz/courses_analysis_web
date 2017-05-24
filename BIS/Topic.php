@@ -53,11 +53,16 @@ class Topic {
         $sql = 'SELECT * FROM `topicword` WHERE `topic` IN (?) ORDER BY `topic` ASC, `weight` DESC';
         $query = $db->executeQuery($sql, array($topicIds), array(\Doctrine\DBAL\Connection::PARAM_INT_ARRAY));
         foreach ($query->fetchAll() as $row) {
-            $data[$row['topic']]['words'][] = $row['word'];
+			if ( intval($row['type']) == 1) {
+				$data[$row['topic']]['words'][] = $row['word'];
+			} else if ( intval($row['type']) == 2 ) {
+				$data[$row['topic']]['normwords'][] = $row['word'];
+			}
         }
 
         foreach ($data as $id => $item) {
             $data[$id]['words'] = implode(', ', $item['words']);
+			$data[$id]['normwords'] = implode(', ', $item['normwords']);
         }
         
         return $data;

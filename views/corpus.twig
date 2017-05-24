@@ -99,7 +99,7 @@
 					<tr>
 						<td>{{ topic.name }}</td>
 						<td>{{ topic.weight }}%</td>
-						<td>{{ topic.words }}</td>
+						<td><b>Common words</b>: {{ topic.words }}<br><b>Distinct words</b>: {{ topic.normwords }}</td>
 					</tr>
 					{% endfor %}
 				</table>
